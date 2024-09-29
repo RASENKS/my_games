@@ -6,21 +6,66 @@
   <title>Listado de Juegos</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
-    /* Personalización para que las imágenes se ajusten mejor a las tarjetas */
-    .game-card img {
-      object-fit: cover;
+    .titulo{
+      text-shadow: 2px 2px 20px red;
+    }
+
+    html{
+       cursor: url('kurisu.png'), pointer;
+    }
+    .game-card {
+      cursor: pointer;
+
+     background-image: linear-gradient(to right top, #4c1d95, #442da2, #4026a6, #2846ba, #0052c5);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .game-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 15px rgba(0, 0, 0, 0.3);
+    }
+
+    /* Fondo degradado para el body */
+   body {
+    background: url("okab.png") repeat-x fixed;
+ 
+}
+
+    /* Color para el borde y fondo del input de búsqueda */
+    #search {
+      border-color: #d946ef;
+      background: linear-gradient(145deg, #6b21a8, #4c1d95);
+    }
+
+    /* Cambios en el texto del input al enfocarse */
+    #search:focus {
+      border-color: #a855f7;
+      outline: none;
     }
   </style>
 </head>
 <body class="bg-gray-900 text-white">
   <div class="container mx-auto p-5">
-    <h1 class="text-4xl font-bold text-center mb-10">Listado de Juegos</h1>
+    <h1 class="text-4xl font-bold text-center mb-10 titulo">Listado de mis Juegos terminados</h1>
+
+    <!-- Input de búsqueda -->
+    <div class="flex justify-center mb-5">
+      <input
+        type="text"
+        id="search"
+        class="w-full md:w-1/2 p-3 rounded-lg border text-white"
+        placeholder="Buscar juegos..."
+      />
+    </div>
+
+    <!-- Contenedor de la lista de juegos -->
     <div id="game-list" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-      <!-- Aquí se generarán las tarjetas dinámicamente -->
+      <!-- Las tarjetas de juegos se generarán aquí -->
     </div>
   </div>
 
   <script>
+    // Lista de juegos
     const juegos = [
       "AC", "AC 2", "AC 3", "AC Black Flag", "AC Brotherhood", "AC Origins", "AC Revelations", "AC Rogue", "AC SYNDICATE", "AC UNITY", 
       "Battlefield 1", "BF 3", "BF Bad Company 2", "BF4", "COD 1", "COD 2", "COD BO", "COD BO 2", "COD BO 3", "COD Infinite Warfare", 
@@ -43,42 +88,52 @@
       "Portal 2", "Portal", "The Callisto Protoco"
     ];
 
-    // Función para obtener imágenes de forma simulada
-    function getImageUrlForGame(game) {
-      const baseUrl = "https://via.placeholder.com/400x300?text=";
-      return `${baseUrl}${encodeURIComponent(game)}`;
-    }
 
     const gameListContainer = document.getElementById('game-list');
+    const searchInput = document.getElementById('search');
 
-    juegos.forEach(juego => {
-      // Crear el contenedor de cada tarjeta
-      const card = document.createElement('div');
-      card.className = 'game-card bg-gray-800 rounded-lg shadow-md overflow-hidden transition-transform transform hover:scale-105';
+    // Función para mostrar los juegos
+    function mostrarJuegos(juegosFiltrados) {
+      gameListContainer.innerHTML = ''; // Limpiar el contenedor antes de agregar los juegos
 
-      // Crear el contenedor de la imagen
-      const imageContainer = document.createElement('div');
-      imageContainer.className = 'h-48 w-full overflow-hidden';
-      
-      // Crear la imagen
-      const image = document.createElement('img');
-      image.src = getImageUrlForGame(juego);
-      image.alt = juego;
-      image.className = 'w-full h-full';
+      // Iteramos sobre cada juego y generamos las tarjetas
+      juegosFiltrados.forEach((juego, index) => {
+        // Crear el contenedor de cada tarjeta
+        const card = document.createElement('div');
+        card.className = 'game-card rounded-lg shadow-md p-4 text-center';
 
-      // Crear el título del juego
-      const title = document.createElement('h2');
-      title.className = 'text-lg font-semibold p-4';
-      title.textContent = juego;
+        // Crear el índice
+        const indexText = document.createElement('p');
+        indexText.className = 'text-gray-200 text-sm';
+        indexText.textContent = `#${index + 1}`;
 
-      // Añadir imagen y título a la tarjeta
-      imageContainer.appendChild(image);
-      card.appendChild(imageContainer);
-      card.appendChild(title);
+        // Crear el título del juego
+        const title = document.createElement('h2');
+        title.className = 'text-lg font-semibold text-white';
+        title.textContent = juego;
 
-      // Añadir la tarjeta al contenedor principal
-      gameListContainer.appendChild(card);
-    });
+        // Añadir índice y título a la tarjeta
+        card.appendChild(indexText);
+        card.appendChild(title);
+
+        // Añadir la tarjeta al contenedor principal
+        gameListContainer.appendChild(card);
+      });
+    }
+
+    // Mostrar todos los juegos al cargar la página
+    mostrarJuegos(juegos);
+
+    // Función para filtrar los juegos
+    function filtrarJuegos() {
+      const query = searchInput.value.toLowerCase(); // Convertir la búsqueda a minúsculas para coincidencias sin distinción de mayúsculas/minúsculas
+      const juegosFiltrados = juegos.filter(juego => juego.toLowerCase().includes(query)); // Filtrar juegos por el texto ingresado
+
+      mostrarJuegos(juegosFiltrados); // Mostrar solo los juegos filtrados
+    }
+
+    // Escuchar el evento input en el campo de búsqueda
+    searchInput.addEventListener('input', filtrarJuegos);
   </script>
 </body>
 </html>
