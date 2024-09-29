@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Listado de Juegos</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    /* Personalización para que las imágenes se ajusten mejor a las tarjetas */
+    .game-card img {
+      object-fit: cover;
+    }
+  </style>
+</head>
+<body class="bg-gray-900 text-white">
+  <div class="container mx-auto p-5">
+    <h1 class="text-4xl font-bold text-center mb-10">Listado de Juegos</h1>
+    <div id="game-list" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+      <!-- Aquí se generarán las tarjetas dinámicamente -->
+    </div>
+  </div>
+
+  <script>
+    const juegos = [
+      "AC", "AC 2", "AC 3", "AC Black Flag", "AC Brotherhood", "AC Origins", "AC Revelations", "AC Rogue", "AC SYNDICATE", "AC UNITY", 
+      "Battlefield 1", "BF 3", "BF Bad Company 2", "BF4", "COD 1", "COD 2", "COD BO", "COD BO 2", "COD BO 3", "COD Infinite Warfare", 
+      "COD MW", "COD MW 2", "COD MW 3", "COD WW", "COD WWII", "Crash of the Titans", "Dark Souls", "Dark Souls 2", "Dark Souls 3", 
+      "Death Stranding", "Doom 2016", "Doom Ethernal", "FAR CRY 3", "FAR CRY 4", "FAR CRY 5", "FAR CRY PRIMAL", "Final Fantasy VX", 
+      "For Honor", "GTA IV", "GTA Sa", "GTA V", "GTA Vice City Stories", "HALO 2", "Halo 3", "Halo 4", "HALO COMBAT ENVOLVED", 
+      "HALO REACH", "Hitman 2", "Hitman 2016", "Hitman Absolution", "Hitman Bood Money", "Kingdom Come Deliverance", "Mafia 3", 
+      "Metro 2033", "Metro Exodus", "Metro Last Light", "Peter Jackson's King Kong", "Red Dead Redemptiom 2", "Remnant From the Ashes", 
+      "Residen Evil 2 2019", "Residen Evil 4", "Residen Evil 5", "Residen Evil 6", "Residen Evil 7", "Resident Evil 3", 
+      "Rise Of The Tomb Rider", "Shadow OF TTR", "Sniper élite 2", "SOCOM: U.S. Navy SEALs CA", "T Clancy's SC: Blacklist", 
+      "The Evil within", "The Forest", "The Witcher 2", "Tom Clancy's Splinter Cell", "Tomb Rider 2013", "Watchdogs", 
+      "Wolfenstein The New Order", "World War Z", "Mafia Definitive Edition", "Devil May Cry 3", "Devil May Cry", "Devil May Cry 4", 
+      "Control", "Wolfenstein II", "Bioshock Remastered", "Bioshock 2", "outlast", "SEKIRO", "Gears of War", "Dyl lig", "Resident Evil 8", 
+      "Outlast II", "Days Gone", "Left 4 Dead", "Nier Replicant", "bioshock infinite", "A plague Tale Innocence", "DMC V", 
+      "Nier autómata", "Halo Infinite", "Helblade", "God Of War", "God Of War 2", "God Of War 3", "God Of War 4", "Elden Ring", 
+      "Batman Arkham City", "Batman Arkham Origins", "Batman Arkham Knight", "Horizon ZD", "Dying Light 2", "Spiderman", 
+      "A Plague Tale: Requiem", "Spider-Man: Miles Morales", "Evil West", "The Witcher 3", "Hitman 3", "Star Wars Jedi Fallen Order", 
+      "Mortal Kombat X", "Gears of War 5", "SOMA", "Outer Wilds", "The walking dead", "Mortal Kombat 11", "Observer", 
+      "Resident Evil 4 Remake", "Zelda BOTW", "TLOU", "Ratchet", "Final Fantasy VII", "Alan wake", "Evil Within 2", "Horizon FW", 
+      "Portal 2", "Portal", "The Callisto Protoco"
+    ];
+
+    // Función para obtener imágenes de forma simulada
+    function getImageUrlForGame(game) {
+      const baseUrl = "https://via.placeholder.com/400x300?text=";
+      return `${baseUrl}${encodeURIComponent(game)}`;
+    }
+
+    const gameListContainer = document.getElementById('game-list');
+
+    juegos.forEach(juego => {
+      // Crear el contenedor de cada tarjeta
+      const card = document.createElement('div');
+      card.className = 'game-card bg-gray-800 rounded-lg shadow-md overflow-hidden transition-transform transform hover:scale-105';
+
+      // Crear el contenedor de la imagen
+      const imageContainer = document.createElement('div');
+      imageContainer.className = 'h-48 w-full overflow-hidden';
+      
+      // Crear la imagen
+      const image = document.createElement('img');
+      image.src = getImageUrlForGame(juego);
+      image.alt = juego;
+      image.className = 'w-full h-full';
+
+      // Crear el título del juego
+      const title = document.createElement('h2');
+      title.className = 'text-lg font-semibold p-4';
+      title.textContent = juego;
+
+      // Añadir imagen y título a la tarjeta
+      imageContainer.appendChild(image);
+      card.appendChild(imageContainer);
+      card.appendChild(title);
+
+      // Añadir la tarjeta al contenedor principal
+      gameListContainer.appendChild(card);
+    });
+  </script>
+</body>
+</html>
