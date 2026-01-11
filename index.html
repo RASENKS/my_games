@@ -1,141 +1,273 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>RASENKS games</title>
-<link rel="icon" type="image/png" href="sly.png">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>RASENKS Games Library</title>
 
+  <link rel="icon" type="image/png" href="sly.png">
   <script src="https://cdn.tailwindcss.com"></script>
+
   <style>
-    .titulo{
-      text-shadow: 2px 2px 20px red;
+    html {
+      cursor: url('kurisu.png'), pointer;
     }
 
-    html{
-       cursor: url('kurisu.png'), pointer;
+    body {
+      background: url("okab.png") repeat-x fixed;
+      background-color: #020617;
     }
+
+    .titulo {
+      text-shadow: 0 0 25px #dc2626, 0 0 50px #7f1d1d;
+    }
+
     .game-card {
-      cursor: pointer;
-
-     background-image: linear-gradient(to right top, #4c1d95, #442da2, #4026a6, #2846ba, #0052c5);
-      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      background: linear-gradient(135deg, #1e1b4b, #312e81, #1e40af);
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
     }
 
     .game-card:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 10px 15px rgba(0, 0, 0, 0.3);
+      transform: translateY(-6px) scale(1.02);
+      box-shadow: 0 20px 30px rgba(0,0,0,0.6);
     }
 
-    /* Fondo degradado para el body */
-   body {
-    background: url("okab.png") repeat-x fixed;
- 
-}
-
-    /* Color para el borde y fondo del input de búsqueda */
     #search {
-      border-color: #d946ef;
-      background: linear-gradient(145deg, #6b21a8, #4c1d95);
+      background: linear-gradient(145deg, #312e81, #1e1b4b);
+      border: 2px solid #a855f7;
     }
 
-    /* Cambios en el texto del input al enfocarse */
     #search:focus {
-      border-color: #a855f7;
       outline: none;
+      border-color: #e879f9;
+      box-shadow: 0 0 15px #c084fc;
     }
   </style>
 </head>
-<body class="bg-gray-900 text-white">
-  <div class="container mx-auto p-5">
-    <h1 class="text-4xl font-bold text-center mb-10 titulo">Listado de mis Juegos terminados</h1>
 
-    <!-- Input de búsqueda -->
-    <div class="flex justify-center mb-5">
+<body class="text-white min-h-screen">
+
+  <main class="container mx-auto px-6 py-10">
+
+    <h1 class="text-5xl font-extrabold text-center mb-12 titulo">
+      Juegos Terminados
+    </h1>
+
+    <div class="flex justify-center mb-10">
       <input
-        type="text"
         id="search"
-        class="w-full md:w-1/2 p-3 rounded-lg border text-white"
-        placeholder="Buscar juegos..."
+        type="text"
+        placeholder="Buscar juego..."
+        class="w-full md:w-2/3 lg:w-1/2 p-4 rounded-xl text-lg text-white"
       />
     </div>
 
-    <!-- Contenedor de la lista de juegos -->
-    <div id="game-list" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-      <!-- Las tarjetas de juegos se generarán aquí -->
-    </div>
-  </div>
+    <section
+      id="game-list"
+      class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8"
+    ></section>
+
+  </main>
 
   <script>
-    // Lista de juegos
     const juegos = [
-      "AC", "AC 2", "AC 3", "AC Black Flag", "AC Brotherhood", "AC Origins", "AC Revelations", "AC Rogue", "AC SYNDICATE", "AC UNITY", 
-      "Battlefield 1", "BF 3", "BF Bad Company 2", "BF4", "COD 1", "COD 2", "COD BO", "COD BO 2", "COD BO 3", "COD Infinite Warfare", 
-      "COD MW", "COD MW 2", "COD MW 3", "COD WW", "COD WWII", "Crash of the Titans", "Dark Souls", "Dark Souls 2", "Dark Souls 3", 
-      "Death Stranding", "Doom 2016", "Doom Ethernal", "FAR CRY 3", "FAR CRY 4", "FAR CRY 5", "FAR CRY PRIMAL", "Final Fantasy VX", 
-      "For Honor", "GTA IV", "GTA Sa", "GTA V", "GTA Vice City Stories", "HALO 2", "Halo 3", "Halo 4", "HALO COMBAT ENVOLVED", 
-      "HALO REACH", "Hitman 2", "Hitman 2016", "Hitman Absolution", "Hitman Bood Money", "Kingdom Come Deliverance", "Mafia 3", 
-      "Metro 2033", "Metro Exodus", "Metro Last Light", "Peter Jackson's King Kong", "Red Dead Redemptiom 2", "Remnant From the Ashes", 
-      "Residen Evil 2 2019", "Residen Evil 4", "Residen Evil 5", "Residen Evil 6", "Residen Evil 7", "Resident Evil 3", 
-      "Rise Of The Tomb Rider", "Shadow OF TTR", "Sniper élite 2", "SOCOM: U.S. Navy SEALs CA", "T Clancy's SC: Blacklist", 
-      "The Evil within", "The Forest", "The Witcher 2", "Tom Clancy's Splinter Cell", "Tomb Rider 2013", "Watchdogs", 
-      "Wolfenstein The New Order", "World War Z", "Mafia Definitive Edition", "Devil May Cry 3", "Devil May Cry", "Devil May Cry 4", 
-      "Control", "Wolfenstein II", "Bioshock Remastered", "Bioshock 2", "outlast", "SEKIRO", "Gears of War", "Dyl lig", "Resident Evil 8", 
-      "Outlast II", "Days Gone", "Left 4 Dead", "Nier Replicant", "bioshock infinite", "A plague Tale Innocence", "DMC V", 
-      "Nier autómata", "Halo Infinite", "Helblade", "God Of War", "God Of War 2", "God Of War 3", "God Of War 4", "Elden Ring", 
-      "Batman Arkham City", "Batman Arkham Origins", "Batman Arkham Knight", "Horizon ZD", "Dying Light 2", "Spiderman", 
-      "A Plague Tale: Requiem", "Spider-Man: Miles Morales", "Evil West", "The Witcher 3", "Hitman 3", "Star Wars Jedi Fallen Order", 
-      "Mortal Kombat X", "Gears of War 5", "SOMA", "Outer Wilds", "The walking dead", "Mortal Kombat 11", "Observer", 
-      "Resident Evil 4 Remake", "Zelda BOTW", "TLOU", "Ratchet", "Final Fantasy VII", "Alan wake", "Evil Within 2", "Horizon FW", 
-      "Portal 2", "Portal", "The Callisto Protoco"
+      "Assassin’s Creed",
+      "Assassin’s Creed II",
+      "Assassin’s Creed III",
+      "Assassin’s Creed IV: Black Flag",
+      "Assassin’s Creed Brotherhood",
+      "Assassin’s Creed Revelations",
+      "Assassin’s Creed Rogue",
+      "Assassin’s Creed Unity",
+      "Assassin’s Creed Syndicate",
+      "Assassin’s Creed Origins",
+
+      "Battlefield 1",
+      "Battlefield 3",
+      "Battlefield 4",
+      "Battlefield: Bad Company 2",
+
+      "Call of Duty",
+      "Call of Duty 2",
+      "Call of Duty: World at War",
+      "Call of Duty: Black Ops",
+      "Call of Duty: Black Ops II",
+      "Call of Duty: Black Ops III",
+      "Call of Duty: Modern Warfare",
+      "Call of Duty: Modern Warfare 2",
+      "Call of Duty: Modern Warfare 3",
+      "Call of Duty: Infinite Warfare",
+      "Call of Duty: WWII",
+
+      "Crash of the Titans",
+      "Dark Souls",
+      "Dark Souls II",
+      "Dark Souls III",
+      "Sekiro: Shadows Die Twice",
+      "Elden Ring",
+
+      "DOOM",
+      "DOOM Eternal",
+      "Death Stranding",
+
+      "Far Cry 3",
+      "Far Cry 4",
+      "Far Cry 5",
+      "Far Cry Primal",
+
+      "Final Fantasy XV",
+      "Final Fantasy VII",
+
+      "For Honor",
+
+      "Grand Theft Auto IV",
+      "Grand Theft Auto: San Andreas",
+      "Grand Theft Auto V",
+      "Grand Theft Auto: Vice City Stories",
+
+      "Halo: Combat Evolved",
+      "Halo 2",
+      "Halo 3",
+      "Halo 4",
+      "Halo: Reach",
+      "Halo Infinite",
+
+      "Hitman 2",
+      "Hitman (2016)",
+      "Hitman: Absolution",
+      "Hitman: Blood Money",
+      "Hitman 3",
+
+      "Kingdom Come: Deliverance",
+      "Kingdom Come: Deliverance II",
+
+      "Mafia III",
+      "Mafia: Definitive Edition",
+
+      "Metro 2033",
+      "Metro: Last Light",
+      "Metro Exodus",
+
+      "Peter Jackson’s King Kong",
+      "Red Dead Redemption 2",
+
+      "Resident Evil 2 (2019)",
+      "Resident Evil 3",
+      "Resident Evil 4",
+      "Resident Evil 4 Remake",
+      "Resident Evil 5",
+      "Resident Evil 6",
+      "Resident Evil 7",
+      "Resident Evil Village",
+
+      "The Evil Within",
+      "The Evil Within 2",
+      "The Forest",
+      "The Witcher 2: Assassins of Kings",
+      "The Witcher 3: Wild Hunt",
+
+      "Tomb Raider (2013)",
+      "Rise of the Tomb Raider",
+      "Shadow of the Tomb Raider",
+
+      "Tom Clancy’s Splinter Cell",
+      "Tom Clancy’s Splinter Cell: Blacklist",
+
+      "Watch Dogs",
+      "Wolfenstein: The New Order",
+      "Wolfenstein II: The New Colossus",
+
+      "BioShock Remastered",
+      "BioShock 2",
+      "BioShock Infinite",
+
+      "Outlast",
+      "Outlast II",
+
+      "Gears of War",
+      "Gears 5",
+
+      "Days Gone",
+      "Left 4 Dead",
+      "NieR Replicant",
+      "NieR: Automata",
+
+      "A Plague Tale: Innocence",
+      "A Plague Tale: Requiem",
+
+      "Devil May Cry",
+      "Devil May Cry 3",
+      "Devil May Cry 4",
+      "Devil May Cry 5",
+
+      "Control",
+      "SOMA",
+      "Outer Wilds",
+      "Observer",
+
+      "God of War",
+      "God of War II",
+      "God of War III",
+      "God of War (2018)",
+
+      "Batman: Arkham City",
+      "Batman: Arkham Origins",
+      "Batman: Arkham Knight",
+
+      "Horizon Zero Dawn",
+      "Horizon Forbidden West",
+
+      "Dying Light 2",
+      "Marvel’s Spider-Man",
+      "Spider-Man: Miles Morales",
+
+      "Evil West",
+      "Star Wars Jedi: Fallen Order",
+
+      "Mortal Kombat X",
+      "Mortal Kombat 11",
+
+      "The Walking Dead",
+      "The Last of Us",
+      "The Last of Us Part II",
+
+      "The Legend of Zelda: Breath of the Wild",
+
+      "Ratchet & Clank",
+      "Alan Wake",
+
+      "Portal",
+      "Portal 2",
+
+      "The Callisto Protocol",
+      "Dishonored 2",
+      "Silent Hill 2 Remake"
     ];
 
+    const container = document.getElementById("game-list");
+    const search = document.getElementById("search");
 
-    const gameListContainer = document.getElementById('game-list');
-    const searchInput = document.getElementById('search');
+    function render(list) {
+      container.innerHTML = "";
+      list.forEach((game, i) => {
+        const card = document.createElement("div");
+        card.className = "game-card rounded-xl p-6 text-center";
 
-    // Función para mostrar los juegos
-    function mostrarJuegos(juegosFiltrados) {
-      gameListContainer.innerHTML = ''; // Limpiar el contenedor antes de agregar los juegos
-
-      // Iteramos sobre cada juego y generamos las tarjetas
-      juegosFiltrados.forEach((juego, index) => {
-        // Crear el contenedor de cada tarjeta
-        const card = document.createElement('div');
-        card.className = 'game-card rounded-lg shadow-md p-4 text-center';
-
-        // Crear el índice
-        const indexText = document.createElement('p');
-        indexText.className = 'text-gray-200 text-sm';
-        indexText.textContent = `#${index + 1}`;
-
-        // Crear el título del juego
-        const title = document.createElement('h2');
-        title.className = 'text-lg font-semibold text-white';
-        title.textContent = juego;
-
-        // Añadir índice y título a la tarjeta
-        card.appendChild(indexText);
-        card.appendChild(title);
-
-        // Añadir la tarjeta al contenedor principal
-        gameListContainer.appendChild(card);
+        card.innerHTML = `
+          <p class="text-sm text-purple-300 mb-2">#${i + 1}</p>
+          <h2 class="text-xl font-bold">${game}</h2>
+        `;
+        container.appendChild(card);
       });
     }
 
-    // Mostrar todos los juegos al cargar la página
-    mostrarJuegos(juegos);
+    render(juegos);
 
-    // Función para filtrar los juegos
-    function filtrarJuegos() {
-      const query = searchInput.value.toLowerCase(); // Convertir la búsqueda a minúsculas para coincidencias sin distinción de mayúsculas/minúsculas
-      const juegosFiltrados = juegos.filter(juego => juego.toLowerCase().includes(query)); // Filtrar juegos por el texto ingresado
-
-      mostrarJuegos(juegosFiltrados); // Mostrar solo los juegos filtrados
-    }
-
-    // Escuchar el evento input en el campo de búsqueda
-    searchInput.addEventListener('input', filtrarJuegos);
+    search.addEventListener("input", () => {
+      const q = search.value.toLowerCase();
+      render(juegos.filter(g => g.toLowerCase().includes(q)));
+    });
   </script>
+
 </body>
 </html>
